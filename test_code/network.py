@@ -6,7 +6,7 @@ import tensorflow.contrib.slim as slim
 
 def resblock(inputs, out_channel=32, name='resblock'):
     
-    with tf.variable_scope(name):
+    with tf.compat.v1.variable_scope(name):
         
         x = slim.convolution2d(inputs, out_channel, [3, 3], 
                                activation_fn=None, scope='conv1')
@@ -49,7 +49,7 @@ def unet_generator(inputs, channel=32, num_blocks=4, name='generator', reuse=Fal
         x3 = tf.nn.leaky_relu(x3)
 
         h2, w2 = tf.shape(x3)[1], tf.shape(x3)[2]
-        x4 = tf.image.resize_bilinear(x3, (h2*2, w2*2))
+        x4 = tf.compat.v1.image.resize_bilinear(x3, (h2*2, w2*2))
         x4 = slim.convolution2d(x4+x0, channel, [3, 3], activation_fn=None)
         x4 = tf.nn.leaky_relu(x4)
         x4 = slim.convolution2d(x4, 3, [7, 7], activation_fn=None)
